@@ -3,6 +3,8 @@ require 'open-uri'
 require 'json'
 
 class Money
+  include Comparable
+
   attr_reader :amount, :currency
 
   class InvalidCurrency < StandardError
@@ -30,6 +32,10 @@ class Money
     else
       @amount * response_json["rate"]
     end
+  end
+
+  def <=> (other_money)
+    @amount <=> other_money.exchange_to(@currency)
   end
 
   class << self

@@ -44,4 +44,16 @@ class MoneyTest < Minitest::Test
   def test_exchange_to_returns_amount_in_usd
     assert_equal 10, @money.exchange_to("USD")
   end
+
+  def test_money1_should_be_grater_than_money2
+    assert Money(20, "USD") > Money(10, "PLN")
+  end
+
+  def test_money1_should_be_equal_to_money2
+    assert Money(10, "PLN") == Money(10, "PLN")
+  end
+
+  def test_money1_should_be_lower_to_money2
+    assert Money(10, "PLN") < Money(10, "EUR")
+  end
 end
