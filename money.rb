@@ -19,6 +19,10 @@ class Money
     "#{format("%.2f", @amount)} #{@currency}"
   end
 
+  def to_int
+    exchange_to("PLN").to_i
+  end
+
   def inspect
     "#<Money #{to_s}>"
   end

@@ -56,4 +56,14 @@ class MoneyTest < Minitest::Test
   def test_money1_should_be_lower_to_money2
     assert Money(10, "PLN") < Money(10, "EUR")
   end
+
+  def test_when_case_returns_ok
+    case @money
+    when Money(20, "PLN")..Money(30, "PLN") then result = "fail"
+    when Money(30, "PLN")..Money(40, "PLN") then result = "OK"
+    when Money(40, "PLN")..Money(50, "PLN") then result = "fail"
+    end
+
+    assert_equal "OK", result
+  end
 end
