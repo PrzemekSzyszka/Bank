@@ -30,4 +30,8 @@ class MoneyTest < Minitest::Test
   def test_object_money_method
     assert_equal "#<Money 15.00 PLN>", Money(15, "PLN").inspect
   end
+
+  def test_exchange_from_dolars_to_pln
+    assert_equal 32.5, Money.exchange.convert(@money, "PLN")
+  end
 end

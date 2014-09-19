@@ -1,8 +1,10 @@
+require './exchange.rb'
+
 class Money
   attr_reader :amount, :currency
 
   def initialize (amount, currency)
-    @amount = amount
+    @amount   = amount
     @currency = currency
   end
 
@@ -26,6 +28,10 @@ class Money
             Money.new(amount, "GBP")
         end
       end
+    end
+
+    def exchange
+      Exchange.new
     end
   end
 end
