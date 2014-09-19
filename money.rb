@@ -1,7 +1,12 @@
 require './exchange.rb'
+require 'open-uri'
+require 'json'
 
 class Money
   attr_reader :amount, :currency
+
+  class InvalidCurrency < StandardError
+  end
 
   def initialize (amount, currency)
     @amount   = amount
@@ -14,6 +19,17 @@ class Money
 
   def inspect
     "#<Money #{to_s}>"
+  end
+
+  def exchange_to(currency)
+    rate = open("http://rate-exchange.appspot.com/currency?from=#{@currency}&to=#{currency}")
+    response_body = rate.read
+    response_json = JSON.parse(response_body)
+    if response_json.include? "err"
+      raise InvalidCurrency
+    else
+      @amount * response_json["rate"]
+    end
   end
 
   class << self
