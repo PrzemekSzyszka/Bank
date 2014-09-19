@@ -26,7 +26,7 @@ class Money
     response_body = rate.read
     response_json = JSON.parse(response_body)
     if response_json.include? "err"
-      raise InvalidCurrency
+      raise InvalidCurrency, "Invalid currency #{currency}"
     else
       @amount * response_json["rate"]
     end
