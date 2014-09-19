@@ -7,11 +7,11 @@ class MoneyTest < Minitest::Test
   end
 
   def test_to_s_method
-    assert_equal @money.to_s, "10.00 USD"
+    assert_equal "10.00 USD", @money.to_s
   end
 
   def test_inspect_method
-    assert_equal @money.inspect, "#<Money 10.00 USD>"
+    assert_equal "#<Money 10.00 USD>", @money.inspect
   end
 
   def test_from_usd_method
