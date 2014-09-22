@@ -66,4 +66,14 @@ class MoneyTest < Minitest::Test
 
     assert_equal "OK", result
   end
+
+  def test_to_eur_changes_amount
+    assert 10 != Money(20, "PLN").to_eur
+  end
+
+  def test_to_chf_should_return_no_method_error
+    assert_raises NoMethodError do
+      assert 10 != Money(20, "PLN").to_chf
+    end
+  end
 end

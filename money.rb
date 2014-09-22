@@ -30,6 +30,12 @@ class Money
     @amount <=> other_money.exchange_to(@currency)
   end
 
+  ["usd", "eur", "gbp"].each do |curr|
+    define_method "to_#{curr}" do
+      exchange_to(curr.upcase)
+    end
+  end
+
   class << self
     ["usd", "eur", "gbp"].each do |curr|
       define_method "from_#{curr}" do |amount|
