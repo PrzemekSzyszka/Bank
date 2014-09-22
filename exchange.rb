@@ -1,60 +1,19 @@
+require 'open-uri'
+require 'json'
+
 class Exchange
+  class InvalidCurrency < StandardError
+  end
+
   def convert(money, currency)
-    case currency
-      when "PLN"
-        convert_to_pln(money.amount, money.currency)
-      when "USD"
-        convert_to_usd(money.amount, money.currency)
-      when "EUR"
-        convert_to_eur(money.amount, money.currency)
-      else
-        convert_to_gbp(money.amount, money.currency)
-    end
-  end
+    rate = open("http://rate-exchange.appspot.com/currency?from=#{money.currency}&to=#{currency}")
+    response_body = rate.read
+    response_json = JSON.parse(response_body)
 
-  private
-
-  def convert_to_pln(amount, currency)
-    case currency
-      when "EUR"
-        amount * 4.19
-      when "USD"
-        amount * 3.25
-      else
-        amount * 5.32
-    end
-  end
-
-  def convert_to_usd(amount, currency)
-    case currency
-      when "EUR"
-        amount * 1.28
-      when "PLN"
-        amount / 3.25
-      else
-        amount * 1.63
-    end
-  end
-
-  def convert_to_eur(amount, currency)
-    case currency
-      when "PLN"
-        amount / 4.19
-      when "USD"
-        amount / 1.28
-      else
-        amount / 0.79
-    end
-  end
-
-  def convert_to_gbp(amount, currency)
-    case currency
-      when "EUR"
-        amount * 0.79
-      when "USD"
-        amount / 1.63
-      else
-        amount / 5.32
+    if response_json.include? "err"
+      raise InvalidCurrency, "Invalid currency #{currency}"
+    else
+      money.amount * response_json["rate"]
     end
   end
 end

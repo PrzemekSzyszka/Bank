@@ -32,11 +32,11 @@ class MoneyTest < Minitest::Test
   end
 
   def test_exchange_from_dolars_to_pln
-    assert_equal 32.5, Money.exchange.convert(@money, "PLN")
+    assert @money.amount != Money.exchange.convert(@money, "PLN")
   end
 
   def test_exchange_to_raises_invalid_currency_error
-    assert_raises Money::InvalidCurrency do |variable|
+    assert_raises Exchange::InvalidCurrency do |variable|
       @money.exchange_to("XYZ")
     end
   end
