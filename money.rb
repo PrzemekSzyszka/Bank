@@ -43,16 +43,9 @@ class Money
   end
 
   class << self
-    [:from_usd, :from_eur, :from_gbp].each do |method|
-      define_method method do |amount|
-        case method
-          when :from_usd
-            Money.new(amount, "USD")
-          when :from_eur
-            Money.new(amount, "EUR")
-          else
-            Money.new(amount, "GBP")
-        end
+    ["usd", "eur", "gbp"].each do |curr|
+      define_method "from_#{curr}" do |amount|
+        Money.new(amount, curr.upcase)
       end
     end
 
