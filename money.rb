@@ -4,6 +4,7 @@ class Money
   include Comparable
 
   attr_reader :amount, :currency
+  KNOWN_CURRENCIES = ["usd", "eur", "gbp"]
 
   def initialize (amount, currency = Money.default_currency)
     raise ArgumentError, "wrong number of arguments (2 for 1)" unless currency
@@ -32,7 +33,7 @@ class Money
     @amount <=> other_money.exchange_to(@currency)
   end
 
-  ["usd", "eur", "gbp"].each do |curr|
+  KNOWN_CURRENCIES.each do |curr|
     define_method "to_#{curr}" do
       exchange_to(curr.upcase)
     end
@@ -45,7 +46,7 @@ class Money
   class << self
     attr_reader :default_currency
 
-    ["usd", "eur", "gbp"].each do |curr|
+    KNOWN_CURRENCIES.each do |curr|
       define_method "from_#{curr}" do |amount|
         Money.new(amount, curr.upcase)
       end
