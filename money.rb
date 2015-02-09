@@ -5,7 +5,9 @@ class Money
 
   attr_reader :amount, :currency
 
-  def initialize (amount, currency)
+  def initialize (amount, currency = Money.default_currency)
+    raise ArgumentError, "wrong number of arguments (2 for 1)" unless currency
+
     @amount   = amount
     @currency = currency
   end
@@ -41,9 +43,21 @@ class Money
   end
 
   class << self
+    attr_reader :default_currency
+
     ["usd", "eur", "gbp"].each do |curr|
       define_method "from_#{curr}" do |amount|
         Money.new(amount, curr.upcase)
+      end
+    end
+
+    def using_default_currency(currency)
+      begin
+        old_currency = default_currency
+        @default_currency = currency
+        yield
+      ensure
+        @default_currency = old_currency
       end
     end
 
