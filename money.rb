@@ -36,6 +36,10 @@ class Money
     end
   end
 
+  def method_missing(m, *args, &block)
+    raise NoMethodError, "There's no method called #{m}"
+  end
+
   class << self
     ["usd", "eur", "gbp"].each do |curr|
       define_method "from_#{curr}" do |amount|
