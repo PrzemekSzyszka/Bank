@@ -3,6 +3,9 @@ require 'json'
 
 class Exchange
   class InvalidCurrency < StandardError
+    def initialize(currency)
+      super("Invalid currency #{currency}")
+    end
   end
 
   def convert(money, currency)
@@ -11,7 +14,7 @@ class Exchange
     response_json = JSON.parse(response_body)
 
     if response_json.include? "err"
-      raise InvalidCurrency, "Invalid currency #{currency}"
+      raise InvalidCurrency, currency
     else
       money.amount * response_json["rate"]
     end
