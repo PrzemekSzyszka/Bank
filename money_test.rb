@@ -67,6 +67,30 @@ class MoneyTest < Minitest::Test
     assert_equal "OK", result
   end
 
+  def test_default_currency_inside_block
+    Money.using_default_currency("USD") do
+      fail unless Money.new(100) == Money.new(100, "USD")
+      fail unless Money(100) == Money(100, "USD")
+    end
+  end
+
+  def test_default_currency_raises_exception_outside_block
+    assert_raises ArgumentError do
+      Money.new(100) == Money.new(100, "PLN")
+    end
+  end
+
+  def test_default_currency_stays_the_same_in_multiple_nestings
+    Money.using_default_currency("USD") do
+      Money.using_default_currency("PLN") do
+        fail unless Money.new(10) == Money.new(10, "PLN")
+        fail unless Money(10) == Money(10, "PLN")
+      end
+
+      fail unless Money.new(10) == Money.new(10, "USD")
+    end
+  end
+
   def test_to_eur_changes_amount
     assert 10 != Money(20, "PLN").to_eur
   end
